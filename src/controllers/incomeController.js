@@ -1,24 +1,36 @@
 const Income = require('../models/income');
 const User = require('../models/user');
+const { body, validationResult } = require('express-validator');
 
 class IncomeController {
   // Add new income entry
   async addIncome(req, res) {
     try {
-      const { clientName, amount, tdsDeducted, gstApplicable, notes, userId } = req.body;
-
-      // Validation
-      if (!clientName || !amount || !userId) {
+      // Validate request
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        console.log('Validation errors:', errors.array());
         return res.status(400).json({
           success: false,
-          message: 'Client name, amount, and user ID are required'
+          message: 'Validation failed',
+          errors: errors.array()
         });
       }
 
+      const { clientName, amount, tdsDeducted, gstApplicable, notes, userId } = req.body;
+
+      // Additional business logic validation
       if (amount <= 0) {
         return res.status(400).json({
           success: false,
           message: 'Amount must be greater than 0'
+        });
+      }
+
+      if (clientName.length < 2 || clientName.length > 100) {
+        return res.status(400).json({
+          success: false,
+          message: 'Client name must be between 2 and 100 characters'
         });
       }
 

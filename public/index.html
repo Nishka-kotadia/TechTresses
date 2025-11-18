@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Freelancer Tax Buddy - Smart Tax Management for Indian Freelancers</title>
+    <meta name="description" content="Complete tax management solution for Indian freelancers with income tracking, tax calculations, and invoice generation">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/animations.css">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="floating-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+            <div class="shape shape-4"></div>
+            <div class="shape shape-5"></div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-chart-line"></i>
+                <span>TaxBuddy</span>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#dashboard" class="nav-link active" data-page="dashboard">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#income" class="nav-link" data-page="income">
+                        <i class="fas fa-indian-rupee-sign"></i>
+                        <span>Income</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#tax" class="nav-link" data-page="tax">
+                        <i class="fas fa-calculator"></i>
+                        <span>Tax</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#invoice" class="nav-link" data-page="invoice">
+                        <i class="fas fa-file-invoice"></i>
+                        <span>Invoice</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#profile" class="nav-link" data-page="profile">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Dashboard Page -->
+        <section id="dashboard" class="page active">
+            <div class="page-header">
+                <h1 class="page-title animate-in">
+                    <i class="fas fa-chart-line"></i>
+                    Dashboard
+                </h1>
+                <p class="page-subtitle animate-in">Your financial overview at a glance</p>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card animate-in" style="--delay: 0.1s">
+                    <div class="stat-icon">
+                        <i class="fas fa-indian-rupee-sign"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 class="stat-value" id="totalIncome">₹0</h3>
+                        <p class="stat-label">Total Income</p>
+                    </div>
+                    <div class="stat-trend positive">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>12%</span>
+                    </div>
+                </div>
+
+                <div class="stat-card animate-in" style="--delay: 0.2s">
+                    <div class="stat-icon">
+                        <i class="fas fa-receipt"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 class="stat-value" id="totalInvoices">0</h3>
+                        <p class="stat-label">Invoices Generated</p>
+                    </div>
+                    <div class="stat-trend positive">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>8%</span>
+                    </div>
+                </div>
+
+                <div class="stat-card animate-in" style="--delay: 0.3s">
+                    <div class="stat-icon">
+                        <i class="fas fa-percentage"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 class="stat-value" id="taxDue">₹0</h3>
+                        <p class="stat-label">Tax Due</p>
+                    </div>
+                    <div class="stat-trend negative">
+                        <i class="fas fa-arrow-down"></i>
+                        <span>5%</span>
+                    </div>
+                </div>
+
+                <div class="stat-card animate-in" style="--delay: 0.4s">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 class="stat-value" id="nextDue">--</h3>
+                        <p class="stat-label">Next Due Date</p>
+                    </div>
+                    <div class="stat-trend neutral">
+                        <i class="fas fa-clock"></i>
+                        <span>45 days</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="charts-section">
+                <div class="chart-container animate-in" style="--delay: 0.5s">
+                    <h3>Income Overview</h3>
+                    <div class="chart" id="incomeChart">
+                        <canvas id="incomeCanvas"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-container animate-in" style="--delay: 0.6s">
+                    <h3>Tax Breakdown</h3>
+                    <div class="chart" id="taxChart">
+                        <canvas id="taxCanvas"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Transactions -->
+            <div class="recent-section animate-in" style="--delay: 0.7s">
+                <h3>Recent Income Entries</h3>
+                <div class="transactions-list" id="recentTransactions">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Income Page -->
+        <section id="income" class="page">
+            <div class="page-header">
+                <h1 class="page-title">
+                    <i class="fas fa-indian-rupee-sign"></i>
+                    Income Management
+                </h1>
+                <p class="page-subtitle">Track and manage all your income sources</p>
+            </div>
+
+            <div class="income-section">
+                <!-- Add Income Form -->
+                <div class="form-card">
+                    <h3>Add New Income</h3>
+                    <form id="incomeForm" class="form">
+                        <div class="form-group">
+                            <label for="clientName">Client Name</label>
+                            <input type="text" id="clientName" name="clientName" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="amount">Amount (₹)</label>
+                            <input type="number" id="amount" name="amount" min="0" step="0.01" required>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="tdsDeducted" name="tdsDeducted">
+                                    <span class="checkmark"></span>
+                                    TDS Deducted (10%)
+                                </label>
+                            </div>
+
+                            <div class="form-group checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="gstApplicable" name="gstApplicable">
+                                    <span class="checkmark"></span>
+                                    GST Applicable (18%)
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="notes">Notes</label>
+                            <textarea id="notes" name="notes" rows="3"></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-plus"></i>
+                            Add Income
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Income List -->
+                <div class="income-list">
+                    <h3>Income History</h3>
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Client</th>
+                                    <th>Amount</th>
+                                    <th>TDS</th>
+                                    <th>GST</th>
+                                    <th>Net Amount</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="incomeTableBody">
+                                <!-- Will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tax Page -->
+        <section id="tax" class="page">
+            <div class="page-header">
+                <h1 class="page-title">
+                    <i class="fas fa-calculator"></i>
+                    Tax Calculator
+                </h1>
+                <p class="page-subtitle">Calculate your taxes with Indian tax regime</p>
+            </div>
+
+            <div class="tax-section">
+                <!-- Tax Calculator Form -->
+                <div class="form-card">
+                    <h3>Calculate Your Tax</h3>
+                    <form id="taxForm" class="form">
+                        <div class="form-group">
+                            <label for="annualIncome">Annual Income (₹)</label>
+                            <input type="number" id="annualIncome" name="annualIncome" min="0" step="1000" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="deductions">Total Deductions (₹)</label>
+                            <input type="number" id="deductions" name="deductions" min="0" step="1000" value="150000">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Tax Regime</label>
+                            <div class="radio-group">
+                                <label class="radio-label">
+                                    <input type="radio" name="regime" value="new" checked>
+                                    <span class="radio-mark"></span>
+                                    New Regime (Default)
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="regime" value="old">
+                                    <span class="radio-mark"></span>
+                                    Old Regime
+                                </label>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-calculator"></i>
+                            Calculate Tax
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Tax Results -->
+                <div class="tax-results" id="taxResults" style="display: none;">
+                    <h3>Tax Breakdown</h3>
+                    <div class="tax-breakdown">
+                        <div class="tax-item">
+                            <span>Gross Income</span>
+                            <span id="grossIncome">₹0</span>
+                        </div>
+                        <div class="tax-item">
+                            <span>Deductions</span>
+                            <span id="totalDeductions">₹0</span>
+                        </div>
+                        <div class="tax-item">
+                            <span>Taxable Income</span>
+                            <span id="taxableIncome">₹0</span>
+                        </div>
+                        <div class="tax-item highlight">
+                            <span>Total Tax</span>
+                            <span id="totalTax">₹0</span>
+                        </div>
+                        <div class="tax-item">
+                            <span>Effective Rate</span>
+                            <span id="effectiveRate">0%</span>
+                        </div>
+                    </div>
+
+                    <!-- Tax Slabs Visualization -->
+                    <div class="tax-slabs">
+                        <h4>Tax Slabs Applied</h4>
+                        <div id="taxSlabsVisualization">
+                            <!-- Will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Advance Tax Schedule -->
+                <div class="advance-tax">
+                    <h3>Advance Tax Schedule</h3>
+                    <div class="tax-schedule">
+                        <div class="schedule-item">
+                            <div class="schedule-date">June 15</div>
+                            <div class="schedule-percentage">15%</div>
+                            <div class="schedule-amount" id="juneTax">₹0</div>
+                        </div>
+                        <div class="schedule-item">
+                            <div class="schedule-date">September 15</div>
+                            <div class="schedule-percentage">45%</div>
+                            <div class="schedule-amount" id="septTax">₹0</div>
+                        </div>
+                        <div class="schedule-item">
+                            <div class="schedule-date">December 15</div>
+                            <div class="schedule-percentage">75%</div>
+                            <div class="schedule-amount" id="decTax">₹0</div>
+                        </div>
+                        <div class="schedule-item">
+                            <div class="schedule-date">March 15</div>
+                            <div class="schedule-percentage">100%</div>
+                            <div class="schedule-amount" id="marchTax">₹0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Invoice Page -->
+        <section id="invoice" class="page">
+            <div class="page-header">
+                <h1 class="page-title">
+                    <i class="fas fa-file-invoice"></i>
+                    Invoice Generator
+                </h1>
+                <p class="page-subtitle">Create professional invoices with TDS and GST</p>
+            </div>
+
+            <div class="invoice-section">
+                <div class="invoice-form-preview">
+                    <!-- Invoice Form -->
+                    <div class="form-card">
+                        <h3>Create Invoice</h3>
+                        <form id="invoiceForm" class="form">
+                            <div class="form-group">
+                                <label for="invoiceClientName">Client Name</label>
+                                <input type="text" id="invoiceClientName" name="clientName" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="invoiceAmount">Amount (₹)</label>
+                                <input type="number" id="invoiceAmount" name="amount" min="0" step="0.01" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="invoiceDescription">Description</label>
+                                <textarea id="invoiceDescription" name="description" rows="3" required></textarea>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group checkbox-group">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="invoiceTds" name="tds">
+                                        <span class="checkmark"></span>
+                                        TDS Applicable
+                                    </label>
+                                </div>
+
+                                <div class="form-group checkbox-group">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="invoiceGst" name="gst">
+                                        <span class="checkmark"></span>
+                                        GST Applicable
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="invoiceNotes">Additional Notes</label>
+                                <textarea id="invoiceNotes" name="notes" rows="2"></textarea>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="button" class="btn btn-secondary" id="previewInvoice">
+                                    <i class="fas fa-eye"></i>
+                                    Preview
+                                </button>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-download"></i>
+                                    Generate PDF
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Invoice Preview -->
+                    <div class="invoice-preview" id="invoicePreview">
+                        <h3>Invoice Preview</h3>
+                        <div class="preview-container">
+                            <div class="invoice-document" id="invoiceDocument">
+                                <!-- Invoice content will be generated here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Invoice History -->
+                <div class="invoice-history">
+                    <h3>Recent Invoices</h3>
+                    <div class="invoice-list" id="invoiceList">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Profile Page -->
+        <section id="profile" class="page">
+            <div class="page-header">
+                <h1 class="page-title">
+                    <i class="fas fa-user"></i>
+                    Profile Settings
+                </h1>
+                <p class="page-subtitle">Manage your personal and business information</p>
+            </div>
+
+            <div class="profile-section">
+                <div class="profile-form">
+                    <div class="form-card">
+                        <h3>Personal Information</h3>
+                        <form id="profileForm" class="form">
+                            <div class="form-group">
+                                <label for="fullName">Full Name</label>
+                                <input type="text" id="fullName" name="fullName" value="John Doe">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" name="email" value="john@freelancer.com">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="phone">Phone</label>
+                                <input type="tel" id="phone" name="phone" value="+91 98765 43210">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="pan">PAN Number</label>
+                                <input type="text" id="pan" name="pan" value="ABCDE1234F" pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}">
+                            </div>
+
+                            <div class="form-group checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="gstRegistered" name="gstRegistered">
+                                    <span class="checkmark"></span>
+                                    GST Registered
+                                </label>
+                            </div>
+
+                            <div class="form-group" id="gstNumberGroup" style="display: none;">
+                                <label for="gstNumber">GST Number</label>
+                                <input type="text" id="gstNumber" name="gstNumber" placeholder="22AAAAA0000A1ZV">
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i>
+                                Save Profile
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="form-card">
+                        <h3>Bank Details</h3>
+                        <form id="bankForm" class="form">
+                            <div class="form-group">
+                                <label for="bankName">Bank Name</label>
+                                <input type="text" id="bankName" name="bankName" value="State Bank of India">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="accountNumber">Account Number</label>
+                                <input type="text" id="accountNumber" name="accountNumber" value="1234567890123456">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="ifscCode">IFSC Code</label>
+                                <input type="text" id="ifscCode" name="ifscCode" value="SBIN0001234">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="accountHolder">Account Holder Name</label>
+                                <input type="text" id="accountHolder" name="accountHolder" value="John Doe">
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i>
+                                Save Bank Details
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>Loading...</p>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- JavaScript -->
+    <script src="js/main-simple.js"></script>
+    
+</body>
+</html>
